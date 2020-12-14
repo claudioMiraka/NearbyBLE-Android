@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="device"
+            type="com.app.nearbyble.database.BleDevice" />
+
+        <variable
+            name="clickListener"
+            type="com.app.nearbyble.ui.bleServer.BleDevicesListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(device)}"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@{device.deviceName}"
+            android:textSize="@dimen/ble_device_list_item_size_big"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Device Name" />
+
+        <TextView
+            android:id="@+id/mac_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@{device.deviceMacAddress}"
+            android:textSize="@dimen/ble_device_list_item_size_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/device_name"
+            tools:text="MAC: XX:XX:XX:XX:XX" />
+
+        <TextView
+            android:id="@+id/signal_strength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:text="@{device.deviceSignalStrength}"
+            android:textSize="@dimen/ble_device_list_item_size_small"
+            app:layout_constraintBottom_toTopOf="@+id/time_seen"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="-100 dBm" />
+
+        <TextView
+            android:id="@+id/time_seen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:firstTimeSeen="@{device}"
+            android:textSize="@dimen/ble_device_list_item_size_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signal_strength"
+            tools:text="EEEE MMM-dd-yyyy' Time: 'HH:mm" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

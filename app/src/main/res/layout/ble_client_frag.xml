@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="bleClientViewModel"
+            type="com.app.nearbyble.ui.bleClient.BleClientViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.bleClient.BleClientFragment">
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> bleClientViewModel.start()}"
+            android:text="@string/start"
+            app:layout_constraintBottom_toTopOf="@+id/devices_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stop_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()-> bleClientViewModel.stop()}"
+            android:text="@string/stop"
+            app:layout_constraintBottom_toTopOf="@+id/devices_list"
+            app:layout_constraintEnd_toStartOf="@+id/start_button"
+            app:layout_constraintStart_toEndOf="@id/clear_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> bleClientViewModel.clear()}"
+            android:text="@string/clear"
+            app:layout_constraintBottom_toTopOf="@+id/devices_list"
+            app:layout_constraintEnd_toStartOf="@id/stop_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/devices_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clear_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

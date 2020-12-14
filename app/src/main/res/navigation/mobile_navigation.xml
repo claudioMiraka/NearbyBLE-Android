@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_ble_server">
+
+    <fragment
+        android:id="@+id/navigation_ble_server"
+        android:name="com.app.nearbyble.ui.bleServer.BleServerFragment"
+        android:label="@string/server"
+        tools:layout="@layout/ble_server_frag" />
+
+    <fragment
+        android:id="@+id/navigation_ble_client"
+        android:name="com.app.nearbyble.ui.bleClient.BleClientFragment"
+        android:label="@string/client"
+        tools:layout="@layout/ble_client_frag" />
+
+</navigation>
