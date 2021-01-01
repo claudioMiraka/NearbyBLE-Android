@@ -1,6 +1,7 @@
 package com.app.nearbyble.ui.bleClient
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import com.app.nearbyble.util.PermissionsHelper
 class BleClientFragment : Fragment() {
 
     private val TAG = BleClientFragment::class.java.simpleName
+    private lateinit var bleClientViewModel : BleClientViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +48,7 @@ class BleClientFragment : Fragment() {
 
         val bleClientViewModelFactory =
             BleClientViewModelFactory(database, application, permissionHelper)
-        val bleClientViewModel =
+        bleClientViewModel =
             ViewModelProvider(this, bleClientViewModelFactory).get(BleClientViewModel::class.java)
 
         binding.bleClientViewModel = bleClientViewModel
@@ -70,5 +72,10 @@ class BleClientFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onStop() {
+        super.onStop()
+        bleClientViewModel.stop()
     }
 }

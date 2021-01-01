@@ -23,6 +23,7 @@ import com.app.nearbyble.util.PermissionsHelper
 class BleServerFragment : Fragment() {
 
     private val TAG = BleServerFragment::class.java.simpleName
+    private lateinit var bleServerViewModel: BleServerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +48,7 @@ class BleServerFragment : Fragment() {
 
         val bleServerViewModelFactory =
             BleServerViewModelFactory(database, application, permissionHelper)
-        val bleServerViewModel =
+        bleServerViewModel =
             ViewModelProvider(this, bleServerViewModelFactory).get(BleServerViewModel::class.java)
 
         binding.bleServerViewModel = bleServerViewModel
@@ -71,5 +72,10 @@ class BleServerFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onStop() {
+        super.onStop()
+        bleServerViewModel.stop()
     }
 }
