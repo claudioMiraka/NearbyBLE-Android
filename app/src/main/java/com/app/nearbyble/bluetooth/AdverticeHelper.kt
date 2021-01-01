@@ -8,9 +8,12 @@ import android.bluetooth.le.BluetoothLeAdvertiser
 import android.os.ParcelUuid
 import android.util.Log
 
-private const val TAG = "AdvertiserHelper"
-
+/**
+ *  Specifies the advertise mode (UUID, power mode, etc...)
+ */
 class AdvertiseHelper constructor(private val bluetoothManager: BluetoothManager) {
+
+    private val TAG = "AdvertiserHelper"
 
     private val advertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {

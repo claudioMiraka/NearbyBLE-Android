@@ -15,6 +15,8 @@ import kotlinx.coroutines.*
 /***
  *  BLE Device scanner
  *
+ *  Scan for new device on a specif UUID and handle discover
+ *
  */
 class BleScanner(
     private val coroutineScope: CoroutineScope,

@@ -85,14 +85,6 @@ class BleClientApi(private var device: BluetoothDevice, private val context: Con
             when (status) {
                 BluetoothGatt.GATT_SUCCESS -> {
                     connectionUpdates(characteristic)
-//                    writeCharacteristic(
-//                        gatt,
-//                        gatt.getService(BLE_CONSTANTS.DISCOVER_SERVICE)
-//                            .getCharacteristic(BLE_CONSTANTS.CLIENT_CHAR),
-//                        //256 SHA encryption token example
-//                        //sent to the BLE gatt server
-//                        "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824".toByteArray()
-//                    )
                     writeDescriptor(
                         gatt,
                         gatt.getService(BLE_CONSTANTS.DISCOVER_SERVICE)
@@ -187,25 +179,6 @@ class BleClientApi(private var device: BluetoothDevice, private val context: Con
         }
     }
 
-    private fun writeCharacteristic(
-        gatt: BluetoothGatt,
-        characteristic: BluetoothGattCharacteristic,
-        payload: ByteArray
-    ) {
-        val writeType = when {
-            characteristic.isWritable() -> BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
-            characteristic.isWritableWithoutResponse() -> {
-                BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
-            }
-            else -> error("Characteristic ${characteristic.uuid} cannot be written to")
-        }
-        characteristic.writeType = writeType
-        characteristic.value = payload
-        //Log.i(TAG, "Message to send to the server : " + payload.toString(Charsets.UTF_8))
-        val status = gatt.writeCharacteristic(characteristic)
-        Log.i(TAG, "writeCharacteristic  returned value: $status")
-    }
-
     private fun writeDescriptor(
         gatt: BluetoothGatt,
         descriptor: BluetoothGattDescriptor,
@@ -213,7 +186,6 @@ class BleClientApi(private var device: BluetoothDevice, private val context: Con
     ) {
 
         descriptor.value = payload
-        //Log.i(TAG, "Message to send to the server : " + payload.toString(Charsets.UTF_8))
         val status = gatt.writeDescriptor(descriptor)
         Log.i(TAG, "writeDescriptor  returned value: $status")
     }

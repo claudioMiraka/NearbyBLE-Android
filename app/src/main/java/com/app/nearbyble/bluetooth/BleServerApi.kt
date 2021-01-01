@@ -9,7 +9,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.nio.charset.Charset
+
+/**
+ *  BLE API for Server
+ *
+ *  Serves 2 Characteristic:
+ *      1 for the client to read which contains  the server 256-bit token
+ *      and 1 containing a descriptor the client can write with its token
+ */
 
 class BleServerApi(
     private val coroutineScope: CoroutineScope,
@@ -30,7 +37,6 @@ class BleServerApi(
     /**
      *  Start advertising for nearby devices
      *  start serving to specific UUID
-     *
      */
     fun startServer() {
         if (!isServerRunning) {
@@ -62,6 +68,12 @@ class BleServerApi(
         }
     }
 
+    /**
+     *  Server call backs
+     *  For more information:
+     *      https://developer.android.com/reference/android/bluetooth/BluetoothGattServerCallback
+     *
+     */
     private val gattServerCallback = object : BluetoothGattServerCallback() {
         override fun onConnectionStateChange(device: BluetoothDevice, status: Int, newState: Int) {
             super.onConnectionStateChange(device, status, newState)
@@ -194,7 +206,10 @@ class BleServerApi(
                 offset,
                 value
             )
-            Log.i(TAG, "Request to write on ${descriptor?.uuid}\t${value?.toString(Charsets.UTF_8)}")
+            Log.i(
+                TAG,
+                "Request to write on ${descriptor?.uuid}\t${value?.toString(Charsets.UTF_8)}"
+            )
             //send responce
             bluetoothGattServer?.sendResponse(
                 device,
@@ -229,7 +244,9 @@ class BleServerApi(
 
     /**
      * Create a BLE Service which defines the characters
-     * and descriptors served by the server
+     * and descriptors served by the server,
+     * 1 characteristic will be read only, which server the server token,
+     * 1 characteristic will have a descriptor which the client will be writing
      */
     private fun createBleService(): BluetoothGattService {
         val service = BluetoothGattService(
