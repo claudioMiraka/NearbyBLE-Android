@@ -90,7 +90,8 @@ class BleServerApi(
                             withContext(Dispatchers.IO) {
                                 val bleDevice = BleDevice(
                                     deviceName = device.name ?: "Unknown",
-                                    deviceMacAddress = device.address
+                                    deviceMacAddress = device.address,
+                                    deviceFoundFrom = BLE_CONSTANTS.FOUND_FROM_SERVER
                                 )
                                 dataSource.insert(bleDevice)
                             }

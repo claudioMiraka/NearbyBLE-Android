@@ -11,7 +11,7 @@ import androidx.room.RoomDatabase
  *  and methods to access it
  *
  */
-@Database(entities = [BleDevice::class], version = 2, exportSchema = false)
+@Database(entities = [BleDevice::class], version = 1, exportSchema = false)
 abstract class BleDeviceDatabase : RoomDatabase() {
 
     /**

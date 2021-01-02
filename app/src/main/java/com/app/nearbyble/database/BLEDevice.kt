@@ -23,5 +23,8 @@ data class BleDevice(
     val deviceSignalStrength: String = "N/A",
 
     @ColumnInfo(name = "device_first_time_seen")
-    val deviceTimeSeen: Long = System.currentTimeMillis()
+    val deviceTimeSeen: Long = System.currentTimeMillis(),
+
+    @ColumnInfo(name = "device_found_from")
+    val deviceFoundFrom : Int = 0,
 )

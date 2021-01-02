@@ -87,7 +87,8 @@ class BleScanner(
                         val device = BleDevice(
                             deviceName = result.device.name,
                             deviceMacAddress = result.device.address,
-                            deviceSignalStrength = result.rssi.toString()
+                            deviceSignalStrength = result.rssi.toString(),
+                            deviceFoundFrom = BLE_CONSTANTS.FOUND_FROM_CLIENT
                         )
                         dataSource.insert(device)
                     }

@@ -3,6 +3,7 @@ package com.app.nearbyble.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.app.nearbyble.bluetooth.BLE_CONSTANTS
 
 /**
  * Access point to database
@@ -36,4 +37,12 @@ interface BLEDeviceDao {
      */
     @Query("SELECT * from ble_device_table WHERE deviceID = :key")
     fun getDeviceById(key: Long): LiveData<BleDevice>
+
+    /**
+     * Return a list of BLE devices found from an identifier that can be observed for changes
+     */
+    @Query("SELECT * FROM ble_device_table WHERE device_found_from = :deviceFoundFrom ORDER BY deviceID DESC")
+    fun getDevicesFrom(deviceFoundFrom : Int): LiveData<List<BleDevice>>
+
+
 }

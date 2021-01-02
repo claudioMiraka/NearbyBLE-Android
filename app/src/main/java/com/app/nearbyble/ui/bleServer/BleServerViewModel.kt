@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.nearbyble.bluetooth.BLE_CONSTANTS
 
 import com.app.nearbyble.bluetooth.BleScanner
 import com.app.nearbyble.bluetooth.BleServerApi
@@ -26,14 +27,12 @@ class BleServerViewModel(
 
     private val TAG = BleServerViewModel::class.java.simpleName
 
-    //private val bleScanner = BleScanner(viewModelScope, application.applicationContext, database)
-
     private val bleServer = BleServerApi(viewModelScope, application.applicationContext, database)
 
     /**
      * Live data return from database containing the list of devices
      */
-    val devices = database.getAllDevices()
+    val devices = database.getDevicesFrom(BLE_CONSTANTS.FOUND_FROM_SERVER)
 
     /**
      * Start scanning for BLE devices

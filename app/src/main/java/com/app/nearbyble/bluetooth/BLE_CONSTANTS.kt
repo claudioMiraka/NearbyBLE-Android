@@ -4,6 +4,9 @@ import java.util.*
 
 object BLE_CONSTANTS {
 
+    const val FOUND_FROM_SERVER = 1;
+    const val FOUND_FROM_CLIENT = 2;
+
     const val STATE_CONNECTED = 2
     const val STATE_DISCONNECTED = 0
 
