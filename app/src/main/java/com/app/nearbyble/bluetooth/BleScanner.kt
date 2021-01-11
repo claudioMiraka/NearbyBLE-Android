@@ -46,9 +46,8 @@ class BleScanner(
     private val filter =
         ScanFilter.Builder().setServiceUuid(ParcelUuid(BLE_CONSTANTS.DISCOVER_SERVICE)).build()
 
-
     /**
-     * Start scanning for ble devices
+     * Start scanning for ble devbleServer.startServer()ices
      */
     fun scanLeDevice() {
         if (!isScanning) {

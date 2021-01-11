@@ -71,6 +71,13 @@ class BleClientFragment : Fragment() {
             }
         })
 
+        bleClientViewModel.showToast.observe(viewLifecycleOwner, { message ->
+            message?.let {
+                Toast.makeText(application, message, Toast.LENGTH_LONG).show()
+                bleClientViewModel.showMToastDone()
+            }
+        })
+
         return binding.root
     }
 

@@ -3,10 +3,11 @@ package com.app.nearbyble.ui.bleServer
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.nearbyble.bluetooth.BLE_CONSTANTS
 
-import com.app.nearbyble.bluetooth.BleScanner
 import com.app.nearbyble.bluetooth.BleServerApi
 import com.app.nearbyble.database.BLEDeviceDao
 import com.app.nearbyble.util.PermissionsHelper
@@ -29,6 +30,14 @@ class BleServerViewModel(
 
     private val bleServer = BleServerApi(viewModelScope, application.applicationContext, database)
 
+    private val _showToast = MutableLiveData<String>()
+
+    val showToast : LiveData<String> get() = _showToast
+
+    fun showToastDone(){
+        _showToast.value = null
+    }
+
     /**
      * Live data return from database containing the list of devices
      */
@@ -49,6 +58,7 @@ class BleServerViewModel(
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     bleServer.startServer()
+                    _showToast.postValue("Serving...")
                 }
             }
         }
@@ -59,6 +69,7 @@ class BleServerViewModel(
      */
     fun stop() {
         bleServer.stopServer()
+        _showToast.value = "Stop serving"
     }
 
     /**
@@ -69,6 +80,7 @@ class BleServerViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 database.clear()
+                _showToast.postValue("Database cleared")
             }
         }
     }
