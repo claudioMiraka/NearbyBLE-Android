@@ -1,5 +1,6 @@
 package com.app.nearbyble.bluetooth
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
@@ -18,6 +19,7 @@ import kotlinx.coroutines.*
  *  Scan for new device on a specif UUID and handle discover
  *
  */
+@SuppressLint("MissingPermission")
 class BleScanner(
     private val coroutineScope: CoroutineScope,
     private val context: Context,

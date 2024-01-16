@@ -16,7 +16,7 @@ class BleServerViewModelFactory(
     private val permissionsHelper: PermissionsHelper
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BleServerViewModel::class.java)) {
             return BleServerViewModel(dataSource, application, permissionsHelper) as T
         }

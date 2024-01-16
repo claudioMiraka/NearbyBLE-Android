@@ -1,6 +1,7 @@
 package com.app.nearbyble.ui.bleClient
 
 import android.app.Application
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -30,9 +31,9 @@ class BleClientViewModel(
 
     private val bleScanner = BleScanner(viewModelScope, application.applicationContext, database)
 
-    private val _showToast = MutableLiveData<String>()
+    private val _showToast = MutableLiveData<String?>()
 
-    val showToast : LiveData<String>  get() = _showToast
+    val showToast: LiveData<String?> get() = _showToast
 
     /**
      * Live data return from database containing the list of devices
@@ -45,12 +46,7 @@ class BleClientViewModel(
      * location has to be granted for android 6.0 and up
      */
     fun start() {
-        if (!permissionsHelper.isBluetoothPermissionGranted())
-            permissionsHelper.requestBluetoothPermission()
-        else if (!permissionsHelper.isForegroundLocationPermissionGranted())
-            permissionsHelper.requestForegroundLocationPermission()
-        else {
-            permissionsHelper.enableBluetooth()
+        if (checkPermissions()) {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     bleScanner.scanLeDevice()
@@ -58,6 +54,30 @@ class BleClientViewModel(
                 }
             }
         }
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!permissionsHelper.isBTScanGranted()) {
+                permissionsHelper.requestBTScanPermission()
+            } else if (!permissionsHelper.isBTConnectGranted()) {
+                permissionsHelper.requestBTConnectPermission()
+//            } else if (!permissionsHelper.isBTAdvertiseGranted()) {
+//                permissionsHelper.requestBTAdvertisePermission()
+            } else {
+                return true
+            }
+        } else {
+            if (!permissionsHelper.isBluetoothPermissionGranted()) {
+                permissionsHelper.requestBluetoothPermission()
+            } else if (!permissionsHelper.isForegroundLocationPermissionGranted()) {
+                permissionsHelper.requestForegroundLocationPermission()
+            } else {
+                return true
+            }
+        }
+        _showToast.postValue("Permissions needed...")
+        return false
     }
 
     /**
@@ -81,7 +101,7 @@ class BleClientViewModel(
         }
     }
 
-    fun showMToastDone(){
+    fun showMToastDone() {
         _showToast.value = null
     }
 }

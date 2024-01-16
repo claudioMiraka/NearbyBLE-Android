@@ -1,5 +1,6 @@
 package com.app.nearbyble.bluetooth
 
+import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.content.Context
 import android.util.Log
@@ -18,6 +19,7 @@ import kotlinx.coroutines.withContext
  *      and 1 containing a descriptor the client can write with its token
  */
 
+@SuppressLint("MissingPermission")
 class BleServerApi(
     private val coroutineScope: CoroutineScope,
     private val context: Context,
@@ -211,7 +213,7 @@ class BleServerApi(
                 TAG,
                 "Request to write on ${descriptor?.uuid}\t${value?.toString(Charsets.UTF_8)}"
             )
-            //send responce
+            //send response
             bluetoothGattServer?.sendResponse(
                 device,
                 requestId,
@@ -227,9 +229,15 @@ class BleServerApi(
             Log.i(TAG, "onConnectionUpdated $uuid")
             when (uuid) {
                 BLE_CONSTANTS.SERVER_CHAR ->
-                    Log.i(TAG, "Message on SERVER_CHAR : " + value?.toString(Charsets.UTF_8))
+                    Log.i(
+                        TAG,
+                        "Message on SERVER_CHAR : " + value?.toString(Charsets.UTF_8)
+                    )
                 BLE_CONSTANTS.CLIENT_CHAR -> {
-                    Log.i(TAG, "Message on CLIENT_CHAR: " + value?.toString(Charsets.UTF_8))
+                    Log.i(
+                        TAG,
+                        "Message on CLIENT_CHAR: " + value?.toString(Charsets.UTF_8)
+                    )
                 }
                 else -> {
                     value.let { bytes ->

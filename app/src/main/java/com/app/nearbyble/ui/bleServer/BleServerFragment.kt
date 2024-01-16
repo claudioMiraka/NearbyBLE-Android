@@ -49,7 +49,7 @@ class BleServerFragment : Fragment() {
         val bleServerViewModelFactory =
             BleServerViewModelFactory(database, application, permissionHelper)
         bleServerViewModel =
-            ViewModelProvider(this, bleServerViewModelFactory).get(BleServerViewModel::class.java)
+            ViewModelProvider(this, bleServerViewModelFactory)[BleServerViewModel::class.java]
 
         binding.bleServerViewModel = bleServerViewModel
         binding.lifecycleOwner = this
@@ -65,18 +65,18 @@ class BleServerFragment : Fragment() {
         binding.devicesList.adapter = adapter
 
         //update the list from database
-        bleServerViewModel.devices.observe(viewLifecycleOwner, {
+        bleServerViewModel.devices.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitLewList(it)
             }
-        })
+        }
 
-        bleServerViewModel.showToast.observe(viewLifecycleOwner, { message ->
+        bleServerViewModel.showToast.observe(viewLifecycleOwner) { message ->
             message?.let {
-                Toast.makeText(application, message, Toast.LENGTH_LONG).show()
+                Toast.makeText(application, message, Toast.LENGTH_SHORT).show()
                 bleServerViewModel.showToastDone()
             }
-        })
+        }
 
         return binding.root
     }

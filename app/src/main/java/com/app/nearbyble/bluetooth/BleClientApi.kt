@@ -1,5 +1,6 @@
 package com.app.nearbyble.bluetooth
 
+import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.content.ClipDescription
 import android.content.Context
@@ -14,6 +15,7 @@ import android.util.Log
  *  Start discovering when MTU size changes successfully
  *
  */
+@SuppressLint("MissingPermission")
 class BleClientApi(private var device: BluetoothDevice, private val context: Context) {
 
     private val TAG = BleClientApi::class.java.simpleName
@@ -78,9 +80,10 @@ class BleClientApi(private var device: BluetoothDevice, private val context: Con
         override fun onCharacteristicRead(
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic,
+            value: ByteArray,
             status: Int
         ) {
-            super.onCharacteristicRead(gatt, characteristic, status)
+            super.onCharacteristicRead(gatt, characteristic, value, status)
             Log.i(TAG, "onCharacteristicRead ${characteristic.uuid}")
             when (status) {
                 BluetoothGatt.GATT_SUCCESS -> {
@@ -142,9 +145,10 @@ class BleClientApi(private var device: BluetoothDevice, private val context: Con
 
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt,
-            characteristic: BluetoothGattCharacteristic
+            characteristic: BluetoothGattCharacteristic,
+            value: ByteArray
         ) {
-            super.onCharacteristicChanged(gatt, characteristic)
+            super.onCharacteristicChanged(gatt, characteristic, value)
             Log.i(TAG, "on onCharacteristicChanged called at ${characteristic.uuid}")
             connectionUpdates(characteristic)
         }

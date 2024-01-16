@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -61,6 +63,19 @@ class PermissionsHelper(private val activity: Activity) {
         return hasPermission(Manifest.permission.BLUETOOTH_ADMIN, activity.applicationContext)
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun isBTConnectGranted(): Boolean {
+        return hasPermission(Manifest.permission.BLUETOOTH_CONNECT, activity.applicationContext)
+    }
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun isBTScanGranted(): Boolean {
+        return hasPermission(Manifest.permission.BLUETOOTH_SCAN, activity.applicationContext)
+    }
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun isBTAdvertiseGranted(): Boolean {
+        return hasPermission(Manifest.permission.BLUETOOTH_ADVERTISE, activity.applicationContext)
+    }
+
     /**
      *  Request Bluetooth permission if not granted
      */
@@ -71,6 +86,31 @@ class PermissionsHelper(private val activity: Activity) {
                 BLUETOOTH_PERMISSION_REQUEST_CODE
             )
     }
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun requestBTScanPermission() {
+        if (!isForegroundLocationPermissionGranted())
+            requestPermission(
+                Manifest.permission.BLUETOOTH_SCAN,
+                BLUETOOTH_PERMISSION_REQUEST_CODE
+            )
+    }
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun requestBTAdvertisePermission() {
+        if (!isForegroundLocationPermissionGranted())
+            requestPermission(
+                Manifest.permission.BLUETOOTH_ADVERTISE,
+                BLUETOOTH_PERMISSION_REQUEST_CODE
+            )
+    }
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun requestBTConnectPermission() {
+        if (!isForegroundLocationPermissionGranted())
+            requestPermission(
+                Manifest.permission.BLUETOOTH_CONNECT,
+                BLUETOOTH_PERMISSION_REQUEST_CODE
+            )
+    }
+
 
     /**
      *  Get bluetooth adaptor
@@ -79,13 +119,5 @@ class PermissionsHelper(private val activity: Activity) {
         val bluetoothManager =
             activity.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
-    }
-
-    /**
-     *  Turn bluetooth
-     *  Bluetooth permission must be granted
-     */
-    fun enableBluetooth(){
-        bluetoothAdapter.enable()
     }
 }

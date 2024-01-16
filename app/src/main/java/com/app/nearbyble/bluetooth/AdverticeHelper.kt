@@ -1,5 +1,6 @@
 package com.app.nearbyble.bluetooth
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseData
@@ -11,9 +12,10 @@ import android.util.Log
 /**
  *  Specifies the advertise mode (UUID, power mode, etc...)
  */
+@SuppressLint("MissingPermission")
 class AdvertiseHelper constructor(private val bluetoothManager: BluetoothManager) {
 
-    private val TAG = "AdvertiserHelper"
+    private val TAG = AdvertiseHelper::class.java.simpleName
 
     private val advertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
@@ -50,10 +52,8 @@ class AdvertiseHelper constructor(private val bluetoothManager: BluetoothManager
     fun stopAdvertising() {
         val bluetoothLeAdvertiser: BluetoothLeAdvertiser? =
             bluetoothManager.adapter.bluetoothLeAdvertiser
-        bluetoothLeAdvertiser?.stopAdvertising(advertiseCallback) ?: Log.w(
-            TAG,
-            "Failed to create advertiser"
-        )
+        bluetoothLeAdvertiser?.stopAdvertising(advertiseCallback)
+            ?: Log.w(TAG, "Failed to create advertiser")
     }
 
 }
